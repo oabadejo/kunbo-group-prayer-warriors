@@ -71,6 +71,8 @@ dependencies {
     //Import the Firebase Auth
     implementation(libs.firebase.auth.ktx)
 
+    implementation(libs.firebase.firestore)
+
 
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
