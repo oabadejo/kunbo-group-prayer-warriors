@@ -146,7 +146,10 @@ fun ProfileSetupScreen(
                 isLoading = true
 
                 // If all validations pass, proceed with sign-up
-                authViewModel.signUp(email, password,
+                authViewModel.signUp(
+                    name = name,
+                    email = email,
+                    password = password,
                     onSuccess = {
                         isLoading = false
                         Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show()
