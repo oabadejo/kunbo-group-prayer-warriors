@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+
+    id("com.google.dagger.hilt.android") version "2.48"
+    kotlin("kapt")
 }
 
 android {
@@ -83,4 +86,11 @@ dependencies {
 
     // Add the Material Icons Extended dependency
     implementation(libs.androidx.material.icons.extended) // Use the latest version
+
+    // Hilt main libraries
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
+
+// Hilt with Jetpack Compose navigation
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 }

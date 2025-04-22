@@ -1,42 +1,55 @@
 package com.kunbogroup.prayerwarriors.ui.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.kunbogroup.prayerwarriors.viewmodel.PrayerViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TrendingScreen(navController: NavHostController) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Trending Prayers", color = MaterialTheme.colorScheme.onPrimary) },
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            )
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Welcome to Prayer Warriors", fontSize = 24.sp)
+fun TrendingScreen(
+    viewModel: PrayerViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
+    val prayers by viewModel.trendingPrayers.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
-            Button(
-                onClick = { navController.navigate("sign_in") },
-                modifier = Modifier.padding(top = 16.dp)
-            ) {
-                Text("Sign In to Interact")
+    LaunchedEffect(Unit) {
+        viewModel.loadTrendingPrayers(
+            onFailure = { exception ->
+                Toast.makeText(context, "Failed to load prayers: ${exception.message}", Toast.LENGTH_LONG).show()
+            }
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator()
+        } else {
+            if (prayers.isEmpty()) {
+                Text("No trending prayers found.")
+            } else {
+                prayers.forEach { prayer ->
+                    Text(text = prayer.text) // Simplified, update UI as needed
+                }
             }
         }
     }
