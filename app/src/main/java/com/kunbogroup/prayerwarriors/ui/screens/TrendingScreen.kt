@@ -16,10 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.kunbogroup.prayerwarriors.viewmodel.PrayerViewModel
 
 @Composable
-fun TrendingScreen(
+fun TrendingScreen(navController: NavHostController,
     viewModel: PrayerViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -48,7 +49,8 @@ fun TrendingScreen(
                 Text("No trending prayers found.")
             } else {
                 prayers.forEach { prayer ->
-                    Text(text = prayer.text) // Simplified, update UI as needed
+                    Text(text = prayer.title) // Display the title of each prayer
+                    Text(text = prayer.content) // Optionally display the content or other details
                 }
             }
         }

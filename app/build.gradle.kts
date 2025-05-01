@@ -5,7 +5,7 @@ plugins {
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
 
-    id("com.google.dagger.hilt.android") version "2.48"
+    id("com.google.dagger.hilt.android") version "2.50"
     kotlin("kapt")
 }
 
@@ -21,6 +21,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    hilt {
+        enableAggregatingTask = false
     }
 
     buildTypes {
@@ -68,6 +72,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.ui.test.junit4)
 
+    androidTestImplementation(libs.androidx.compose.ui.ui.test.junit4)
+
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
 
@@ -88,9 +94,9 @@ dependencies {
     implementation(libs.androidx.material.icons.extended) // Use the latest version
 
     // Hilt main libraries
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-compiler:2.48")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-// Hilt with Jetpack Compose navigation
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    // Hilt with Jetpack Compose navigation
+    implementation(libs.androidx.hilt.navigation.compose)
 }
